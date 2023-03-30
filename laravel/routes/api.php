@@ -21,3 +21,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/read/{model}/{id?}', [\App\Http\Controllers\CrudController::class, 'read']);
 Route::post('/create/{model}/', [\App\Http\Controllers\CrudController::class, 'create']);
+Route::put('/update/{model}/{id}', [\App\Http\Controllers\CrudController::class, 'update']);
+Route::delete('/delete/{model}/{id}', [\App\Http\Controllers\CrudController::class, 'delete']);
