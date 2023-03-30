@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('/read/{model}/{id?}', [\App\Http\Controllers\CrudController::class, 'read']);
+Route::post('/create/{model}/', [\App\Http\Controllers\CrudController::class, 'create']);
