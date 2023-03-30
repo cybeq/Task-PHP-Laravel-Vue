@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Interfaces\CrudInterface;
 use App\Models\Car;
 use App\Models\Client;
+use App\Models\Order;
 use App\Notifications\CarAssignedNotification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +19,7 @@ class CrudService
             "Order"=>"client_id",
             "Employee"=>null
         ];
-    public static function create(string $name,Model $model, string $modelName, string|null $foreign, float|null $price): Model|null{
+    public static function create(string $name,Model $model, string $modelName, string|null $foreign, float|null $price, string|null $orderId): Model|null{
         if(!$name){
             return null;
         }
@@ -28,6 +29,7 @@ class CrudService
         if($parameter && $modelName ==='Client') {
             $model->$parameter = $foreign;
         }
+
         if($modelName === 'Order'){
             $model->price = $price ?? 0 ;
         }
@@ -36,16 +38,19 @@ class CrudService
         }catch(\Illuminate\Database\QueryException $e){
             return null;
         }
+        if($orderId!== null && $modelName === 'Client'){
+            $model->orders()->syncWithoutDetaching(Order::find($orderId)->first());
+        }
         return $model;
     }
     public static function read(string|null $id, Model $model, string $modelName): Model|array|null{
         if($id !== null){
-            return $model::where(["id"=>$id])->first();
+            return $model::find($id);
         }
         return $model::all()->toArray();
     }
-    public static function update(bool $test, string $instance, string|null $id, string|null $foreign, string $name, string $modelName, string|null $price): mixed{
-        $model =  $instance::where(["id"=>$id])->first();
+    public static function update(bool $test, string $instance, string|null $id, string|null $foreign, string $name, string $modelName, string|null $price, string|null $orderId): mixed{
+        $model =  $instance::find($id);
 
         if($test)
         {
@@ -64,7 +69,10 @@ class CrudService
         if($foreign !== null && $modelNameEndOfPath === 'Car'){
             Notification::route('mail', ['tcmworkouts@gmail.com' => 'Barrett Blair',])
                          ->notify(new CarAssignedNotification($model));
-            $model->clients()->syncWithoutDetaching(Client::where(["id"=>$foreign])->first());
+            $model->clients()->syncWithoutDetaching(Client::find($foreign)->first());
+        }
+        if($orderId!== null && $modelNameEndOfPath === 'Client'){
+            $model->orders()->syncWithoutDetaching(Order::find($orderId)->first());
         }
 
 
@@ -81,7 +89,7 @@ class CrudService
     }
 
     public static function delete(string $instance, string $id): bool{
-        $model =  $instance::where(["id"=>$id])->first();
+        $model =  $instance::find($id);
 
         if(!$model){
             return false;

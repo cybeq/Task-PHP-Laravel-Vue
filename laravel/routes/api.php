@@ -24,3 +24,4 @@ Route::post('/create/{model}/', [\App\Http\Controllers\CrudController::class, 'c
 Route::put('/update/{model}/{id}', [\App\Http\Controllers\CrudController::class, 'update']);
 Route::delete('/delete/{model}/{id}', [\App\Http\Controllers\CrudController::class, 'delete']);
 Route::get('/many/car/client/{client_id}', [App\Http\Controllers\CrudController::class, 'getCarsByClient']);
+Route::get('/many/order/client/{client_id}', [App\Http\Controllers\CrudController::class, 'getOrdersByClient']);
