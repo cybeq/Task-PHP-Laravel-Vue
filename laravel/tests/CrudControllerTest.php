@@ -19,7 +19,6 @@ class AbstractCrudControllerTest extends TestCase
     {
         foreach(["Car", "Client", "Order", "Employee"] as $modelName) {
             $name = 'Test';
-
             $response = $this->post("/api/create/$modelName/", ['name' => $name]);
             $model = $response->original;
             $this->assertInstanceOf('Illuminate\Database\Eloquent\Model', $model);

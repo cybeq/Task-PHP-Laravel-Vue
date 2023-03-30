@@ -18,19 +18,11 @@ use PhpParser\Error;
 
 abstract class AbstractCrudController extends Controller implements CrudInterface
 {
-    private array $parametersMap;
+
     private mixed $model;
     private mixed $modelName;
 
-    public function __construct(Request $request)
-    {
-        $this->parametersMap = [
-            "Car"=>"owner_id",
-            "Client"=>"employee_id",
-            "Order"=>"client_id",
-            "Employee"=>null
-        ];
-    }
+    public function __construct(Request $request){}
     private function getInstance(string $modelName):string{
         $this->modelName = "App\\Models\\".$modelName;
         try {
@@ -48,7 +40,7 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
                                     $request->get('name'),
                                     $this->model,
                                     $request->route('model'),
-                             $request->get('foreign_id') ?? null,
+                                    $request->get('foreign_id') ?? null,
                                     $request->get('price') ?? null
         );
     }

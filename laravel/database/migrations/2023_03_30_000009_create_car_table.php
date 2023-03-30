@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("owner_id")->nullable();
+            $table->unsignedBigInteger("client_id")->nullable();
             $table->string("name");
             $table->timestamps();
         });

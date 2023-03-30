@@ -3,13 +3,15 @@
 namespace App\Http\Services;
 
 use App\Http\Interfaces\CrudInterface;
+use App\Notifications\CarAssignedNotification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Notification;
 
 class CrudService
 {
     private static array $parametersMap = [
-            "Car"=>"owner_id",
+            "Car"=>"client_id",
             "Client"=>"employee_id",
             "Order"=>"client_id",
             "Employee"=>null
@@ -42,6 +44,7 @@ class CrudService
     }
     public static function update(bool $test, string $instance, string|null $id, string|null $foreign, string $name, string $modelName, string|null $price): mixed{
         $model =  $instance::where(["id"=>$id])->first();
+
         if($test)
         {
             $model =  $instance::all()->first();
@@ -54,8 +57,20 @@ class CrudService
         }
         if($foreign !== null && $modelNameEndOfPath !== 'Employee'){
             $parameter = self::$parametersMap[$modelNameEndOfPath];
+            if($modelNameEndOfPath ==='Car')
+            {
+                if($model->$parameter !== $foreign)
+                {
+                    Notification::route('mail', [
+                        'tcmworkouts@gmail.com' => 'Barrett Blair',
+                    ])->notify(new CarAssignedNotification($model));
+//                    $model->notify(new CarAssignedNotification($model));
+                }
+            }
             $model->$parameter = $foreign;
+
         }
+
 
         if($modelName === 'Order'){
             $model->price = 350 ;
