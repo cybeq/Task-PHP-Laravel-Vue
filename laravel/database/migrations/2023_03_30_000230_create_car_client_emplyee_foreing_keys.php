@@ -18,12 +18,6 @@ return new class extends Migration
                  ->onDelete('cascade');
        });
 
-        Schema::table('cars', function (Blueprint $table){
-            $table->foreign("client_id")
-                ->references("id")
-                ->on("clients")
-                ->onDelete('cascade');
-        });
     }
 
     /**

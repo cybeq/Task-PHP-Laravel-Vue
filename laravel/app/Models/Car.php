@@ -11,6 +11,11 @@ class Car extends Model
     use HasFactory;
     use Notifiable;
 
+    public function clients()
+    {
+        return $this->belongsToMany(Client::class);
+    }
+
     protected $table = 'cars';
     protected $fillable = ["client_id", "name"];
 }

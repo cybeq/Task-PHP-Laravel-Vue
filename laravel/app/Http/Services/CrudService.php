@@ -3,6 +3,8 @@
 namespace App\Http\Services;
 
 use App\Http\Interfaces\CrudInterface;
+use App\Models\Car;
+use App\Models\Client;
 use App\Notifications\CarAssignedNotification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -23,7 +25,7 @@ class CrudService
         $model->name = $name;
 
         $parameter = self::$parametersMap[$modelName];
-        if($parameter) {
+        if($parameter && $modelName !== 'Car') {
             $model->$parameter = $foreign;
         }
         if($modelName === 'Order'){
@@ -55,20 +57,14 @@ class CrudService
         if(!$model){
             return new JsonResponse(["error"=>"There is no such a ".$modelNameEndOfPath." with that id"]);
         }
-        if($foreign !== null && $modelNameEndOfPath !== 'Employee'){
+        if($foreign !== null && $modelNameEndOfPath !== 'Employee' && $modelNameEndOfPath !=='Car'){
             $parameter = self::$parametersMap[$modelNameEndOfPath];
-            if($modelNameEndOfPath ==='Car')
-            {
-                if($model->$parameter !== $foreign)
-                {
-                    Notification::route('mail', [
-                        'tcmworkouts@gmail.com' => 'Barrett Blair',
-                    ])->notify(new CarAssignedNotification($model));
-//                    $model->notify(new CarAssignedNotification($model));
-                }
-            }
             $model->$parameter = $foreign;
-
+        }
+        if($foreign !== null && $modelNameEndOfPath === 'Car'){
+            Notification::route('mail', ['tcmworkouts@gmail.com' => 'Barrett Blair',])
+                         ->notify(new CarAssignedNotification($model));
+            $model->clients()->syncWithoutDetaching(Client::where(["id"=>$foreign])->first());
         }
 
 
