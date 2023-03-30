@@ -17,7 +17,8 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => explode(' ',fake()->sentence())[0]
+            'name' => explode(' ',fake()->sentence())[0],
+            'price' => rand(50, 880)
         ];
     }
 }

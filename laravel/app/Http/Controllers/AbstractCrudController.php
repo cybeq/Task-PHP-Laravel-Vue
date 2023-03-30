@@ -48,7 +48,8 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
                                     $request->get('name'),
                                     $this->model,
                                     $request->route('model'),
-                             $request->get('foreign_id') ?? null
+                             $request->get('foreign_id') ?? null,
+                                    $request->get('price') ?? null
         );
     }
 
@@ -69,7 +70,8 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
                            $request->route('id') === 'test',
                                 $this->model, $request->route('id'),
                          $request->get('foreign_id') ?? null,
-                                $request->get('name'),$this->modelName
+                                $request->get('name'),$this->modelName,
+                           $request->get('price') ?? null
         );
     }
 

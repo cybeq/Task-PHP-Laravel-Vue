@@ -14,7 +14,7 @@ class CrudService
             "Order"=>"client_id",
             "Employee"=>null
         ];
-    public static function create($name, $model, $modelName, $foreign): Model|null{
+    public static function create(string $name,Model $model, string $modelName, string|null $foreign, float|null $price): Model|null{
         if(!$name){
             return null;
         }
@@ -23,6 +23,9 @@ class CrudService
         $parameter = self::$parametersMap[$modelName];
         if($parameter) {
             $model->$parameter = $foreign;
+        }
+        if($modelName === 'Order'){
+            $model->price = $price ?? 0 ;
         }
         try {
             $model->save();
@@ -37,22 +40,25 @@ class CrudService
         }
         return $model::all()->toArray();
     }
-    public static function update(bool $test, string $instance, string|null $id, string|null $foreign, string $name, string $modelName): mixed{
+    public static function update(bool $test, string $instance, string|null $id, string|null $foreign, string $name, string $modelName, string|null $price): mixed{
         $model =  $instance::where(["id"=>$id])->first();
         if($test)
         {
             $model =  $instance::all()->first();
         }
-        if(!$model){
-            return new JsonResponse(["error"=>"There is no such a ".$modelName." with that id"]);
-        }
-        if($foreign !== null){
-            $parameter = self::$parametersMap[$modelName];
 
+        $modelNameEndOfPath = explode('\\', $modelName);
+        $modelNameEndOfPath = end($modelNameEndOfPath);
+        if(!$model){
+            return new JsonResponse(["error"=>"There is no such a ".$modelNameEndOfPath." with that id"]);
+        }
+        if($foreign !== null && $modelNameEndOfPath !== 'Employee'){
+            $parameter = self::$parametersMap[$modelNameEndOfPath];
             $model->$parameter = $foreign;
         }
-        if($name !== null){
-            $model->name = $name;
+
+        if($modelName === 'Order'){
+            $model->price = 350 ;
         }
         try {
             $model->save();
