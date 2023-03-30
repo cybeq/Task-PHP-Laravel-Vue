@@ -3,13 +3,21 @@ import ClientsComponent from "@/components/ClientsComponent.vue";
 import CarsComponent from "@/components/CarsComponent.vue";
 import OrdersComponent from "@/components/OrdersComponent.vue";
 import EmployeesComponent from "@/components/EmployeesComponent.vue";
+import EditComponent from "@/components/aside/EditComponent.vue";
 
 const routes = [
     {
         path: '/clients',
         name: 'Clients',
         component: ClientsComponent,
-        props:true
+        props:true,
+        children:[
+            {
+                path:'edit',
+                name:'edit',
+                component:EditComponent
+            }
+        ]
     },
     {
         path: '/cars',
@@ -29,11 +37,6 @@ const routes = [
         component: EmployeesComponent,
         props:true
     },
-    // {
-    //     path: '/about',
-    //     name: 'About',
-    //     component: About
-    // }
 ]
 const router = createRouter({
     history: createWebHistory(),

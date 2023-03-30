@@ -1,10 +1,8 @@
-
 module.exports = function(client){
     const container = document.createElement('div');
     const leftGrid  = document.createElement('div');
-    leftGrid.style.width="45%"
+    leftGrid.style.width="100%"
     const rightGrid = document.createElement('div');
-
 
     let summary = 0;
     for(let order of client.orders){
@@ -14,10 +12,10 @@ module.exports = function(client){
         leftGrid.appendChild(div);
     }
 
-
-
     for(let car of client.cars){
         const div = document.createElement('div')
+        div.style.cursor='pointer'
+        div.style.pointerEvents="unset"
         div.innerHTML=`<div style="background:cadetblue; padding:5px;font-family:PoppinsMedium, sans-serif; color: orange;">
         Auta klienta</div>`
         div.innerHTML+=`<p style="border-bottom:1px solid #00000030; background:#98c6c7;margin-block:0; padding-inline:5px; padding-block:2px;">
@@ -34,11 +32,10 @@ module.exports = function(client){
     leftGrid.appendChild(div)
     container.appendChild(leftGrid)
 
-
     container.innerHTML+=`<p style="font-size:1.2em;">Suma: ${summary} ,-</p>`
-
 
     container.appendChild(div.cloneNode())
     container.appendChild(rightGrid)
+
     return container;
 }

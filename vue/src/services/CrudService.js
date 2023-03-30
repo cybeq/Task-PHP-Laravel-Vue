@@ -13,8 +13,19 @@ const service = {
             return {"error":error};
         }
     },
-  
-
+    delete: async function(model, id){
+        let url = `/api/delete/${model}/${id}`
+        try {
+            const response = await fetch(url, {method:'DELETE'});
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            return {"error":error};
+        }
+    }
 };
 
 export { service };
