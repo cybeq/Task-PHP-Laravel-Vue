@@ -38,7 +38,7 @@ class CrudService
         }
         return $model;
     }
-    public static function read(string|null $id, Model $model): Model|array|null{
+    public static function read(string|null $id, Model $model, string $modelName): Model|array|null{
         if($id !== null){
             return $model::where(["id"=>$id])->first();
         }

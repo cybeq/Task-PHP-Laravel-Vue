@@ -51,7 +51,8 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
         $id = $request->route('id');
         return CrudService::read(
                                     $id,
-                                    $this->model
+                                    $this->model,
+                                    $this->modelName
         );
     }
 
