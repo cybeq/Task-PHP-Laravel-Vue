@@ -7,6 +7,7 @@
         <div class="sortable">id</div>
         <div class="sortable">Imię i nazwisko</div>
         <div>Łączna wota zakupów</div>
+        <div>Liczba aut</div>
         <div>Edytuj/Usuń</div>
     </div>
     <div  v-for="client in clients" :key="client.id" @click="dropDownInfo(client)">
@@ -14,8 +15,8 @@
         <div class="row" :style="this.droppable[client.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' ">
             <div>{{client.id}}</div>
             <div>{{client.name}}</div>
-          <div>{{this.summarize(client.orders)}}</div>
-
+            <div>{{this.summarize(client)}}</div>
+            <div>{{this.summarize(client,'cars')}}</div>
             <div style="display: flex">
               <button class="action-button">
                   <IconIc svgPath="trash" width="26" height="26" fillColor="#fff"></IconIc>
@@ -55,7 +56,7 @@ export default {
   methods:{
     async dropDownInfo(client){
       const dom = document.getElementById(`${client.id}-droppable`)
-      const ordersDomElement = getOrdersDOM(client.orders)
+      const ordersDomElement = getOrdersDOM(client)
       if(this.droppable[client.id]){
         this.droppable[client.id] = false;
         dom.innerHTML='';
@@ -79,11 +80,26 @@ export default {
 
       this.droppable[client.id] = true;
     },
-    summarize(orders){
+    summarize(client, option){
       let summary = 0;
-      orders.forEach(order=>{
-        summary+=order.price
-      })
+      switch(option){
+        case 'cars':
+          client.cars.forEach(()=>{
+            summary+=1;
+          })
+          break;
+
+        default:
+          client.orders.forEach(order=>{
+            summary+=order.price
+          });
+          break;
+
+      }
+
+
+
+
       return summary;
     }
   }
@@ -93,7 +109,7 @@ export default {
 <style scoped>
 .row, .column{
   display: grid;
-  grid-template-columns: 1fr 2fr 6fr 2fr;
+  grid-template-columns: 1fr 2fr 1fr 6fr 2fr;
 
 }
 
