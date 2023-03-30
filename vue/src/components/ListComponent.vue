@@ -1,8 +1,9 @@
 <template>
-
+  <div></div>
 </template>
 
 <script>
+import {service} from '../services/CrudService'
 export default {
   name: "ListController",
   data(){
@@ -15,6 +16,16 @@ export default {
     }
   },
   mounted(){
+    for(let all of ['Client', 'Order', 'Car', 'Employee'])
+    service.read(all, 5).then(res=>{
+      if(!res.error) {
+        this[all] = res;
+        console.log(this[all])
+      }
+    })
+
+
+
 
   }
 }

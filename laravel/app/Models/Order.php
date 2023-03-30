@@ -10,6 +10,10 @@ class Order extends Model
 {
     use HasFactory;
     use Notifiable;
+    public function clients()
+    {
+        return $this->belongsToMany(Client::class);
+    }
     protected $table = "orders";
     protected $fillable = ["client_id","name", "price"];
 }

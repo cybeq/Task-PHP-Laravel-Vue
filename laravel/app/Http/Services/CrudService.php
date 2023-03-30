@@ -25,7 +25,7 @@ class CrudService
         $model->name = $name;
 
         $parameter = self::$parametersMap[$modelName];
-        if($parameter && $modelName !== 'Car') {
+        if($parameter && $modelName ==='Client') {
             $model->$parameter = $foreign;
         }
         if($modelName === 'Order'){
@@ -57,7 +57,7 @@ class CrudService
         if(!$model){
             return new JsonResponse(["error"=>"There is no such a ".$modelNameEndOfPath." with that id"]);
         }
-        if($foreign !== null && $modelNameEndOfPath !== 'Employee' && $modelNameEndOfPath !=='Car'){
+        if($foreign !== null && $modelNameEndOfPath === 'Client' ){
             $parameter = self::$parametersMap[$modelNameEndOfPath];
             $model->$parameter = $foreign;
         }

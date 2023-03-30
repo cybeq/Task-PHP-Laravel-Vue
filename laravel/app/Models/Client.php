@@ -14,6 +14,10 @@ class Client extends Model
     {
         return $this->belongsToMany(Car::class);
     }
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
+    }
     protected $table = 'clients';
     protected $fillable = ["employee_id", "name"];
 }
