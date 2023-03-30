@@ -39,7 +39,7 @@ class CrudService
             return null;
         }
         if($orderId!== null && $modelName === 'Client'){
-            $model->orders()->syncWithoutDetaching(Order::find($orderId)->first());
+            $model->orders()->syncWithoutDetaching(Order::find($orderId));
         }
         return $model;
     }
@@ -69,12 +69,8 @@ class CrudService
         if($foreign !== null && $modelNameEndOfPath === 'Car'){
             Notification::route('mail', ['tcmworkouts@gmail.com' => 'Barrett Blair',])
                          ->notify(new CarAssignedNotification($model));
-            $model->clients()->syncWithoutDetaching(Client::find($foreign)->first());
+            $model->clients()->syncWithoutDetaching(Client::find($foreign));
         }
-        if($orderId!== null && $modelNameEndOfPath === 'Client'){
-            $model->orders()->syncWithoutDetaching(Order::find($orderId)->first());
-        }
-
 
         if($modelName === 'Order'){
             $model->price = 350 ;
@@ -83,6 +79,10 @@ class CrudService
             $model->save();
         }catch(\Illuminate\Database\QueryException $e){
             return new JsonResponse(["error"=>$e]);
+        }
+
+        if($orderId!== null && $modelNameEndOfPath === 'Client'){
+            $model->orders()->syncWithoutDetaching(Order::find($orderId));
         }
 
         return $model;

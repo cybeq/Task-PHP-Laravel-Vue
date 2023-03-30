@@ -16,3 +16,14 @@ php artisan tinker
 php artisan test tests/CrudControllerTest.php
 ````
 ----------------
+# Step 3:
+## Use app
+````
+cd ./vue
+$ npm run serve
+
+cd ./laravel
+$ php artisan serve
+````
+#### Then you will be able to run application directly on localhost:8000/
+#### or through VUE and Laravel as API on localhost:8080/
