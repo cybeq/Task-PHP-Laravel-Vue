@@ -2,7 +2,6 @@ const service = {
     read: async function (model, id) {
         let url = `/api/read/${model}`
         if(id) url = `${url}/${id}`;
-
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -14,6 +13,8 @@ const service = {
             return {"error":error};
         }
     },
+  
+
 };
 
 export { service };

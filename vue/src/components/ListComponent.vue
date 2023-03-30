@@ -23,13 +23,14 @@ export default {
   },
   mounted(){
     for(let all of ['Client', 'Order', 'Car', 'Employee']) {
-      service.read(all).then(res => {
+    service.read(all).then(res => {
         if (!res.error) {
           this.list[all] = res;
           console.log(res)
         }
       })
     }
+
   },
 }
 </script>

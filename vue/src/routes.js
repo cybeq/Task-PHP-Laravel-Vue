@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ClientsComponent from "@/components/ClientsComponent.vue";
-import CarsComponent from "@/components/widgets/CarsComponent.vue";
+import CarsComponent from "@/components/CarsComponent.vue";
 import OrdersComponent from "@/components/OrdersComponent.vue";
 import EmployeesComponent from "@/components/EmployeesComponent.vue";
 

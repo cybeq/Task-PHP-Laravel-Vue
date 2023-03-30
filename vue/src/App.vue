@@ -72,4 +72,17 @@ body{
   box-shadow: 3px 3px 3px #00000050;
   background: black;
 }
+.column{
+  background-color: #f57445;
+  color:white;
+}
+.row{
+  cursor: col-resize;
+}
+.sortable{
+  transition: background-color 1s ease;
+}
+.sortable:hover{
+  background-color: #944123;
+}
 </style>

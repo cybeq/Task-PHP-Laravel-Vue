@@ -44,8 +44,27 @@ class CrudService
         return $model;
     }
     public static function read(string|null $id, Model $model, string $modelName): Model|array|null{
+        if($id !== null && $modelName==='Client'){
+            $client = Client::find($id);
+            $model =  $model::find($id);
+            $model->cars = $client->cars()->get();
+            $model->orders = $client->orders()->get();
+            return $model;
+        }
         if($id !== null){
             return $model::find($id);
+        }
+        if($modelName === 'Client'){
+            $modelGroup = $model::all();
+            foreach ( $modelGroup as $singleModel ){
+                if(!$singleModel->id){
+                    continue;
+                }
+                $client = Client::find($singleModel->id);
+                $singleModel->cars = $client->cars()->get();
+                $singleModel->orders = $client->orders()->get();
+            }
+            return $modelGroup->toArray();
         }
         return $model::all()->toArray();
     }

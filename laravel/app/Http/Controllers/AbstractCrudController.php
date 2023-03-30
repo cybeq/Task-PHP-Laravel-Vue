@@ -21,10 +21,12 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
 
     private mixed $model;
     private mixed $modelName;
+    private string $modelNameNoPath;
 
     public function __construct(Request $request){}
     private function getInstance(string $modelName):string{
         $this->modelName = "App\\Models\\".$modelName;
+        $this->modelNameNoPath = $modelName;
         try {
             $this->model = new $this->modelName;
         }catch(\Throwable $e){
@@ -53,7 +55,7 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
         return CrudService::read(
                                     $id,
                                     $this->model,
-                                    $this->modelName
+                                    $this->modelNameNoPath
         );
     }
 
