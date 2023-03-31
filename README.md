@@ -1,4 +1,4 @@
-![img.png](img.png)!
+![img.png](img.png)
 
 #### Warning: This app require database migration and SMTP/POP3/IMAP configuration
 

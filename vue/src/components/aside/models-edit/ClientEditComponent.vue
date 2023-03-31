@@ -1,5 +1,5 @@
 <template>
-  <p>Nazwa użytkownika</p>
+  <p>Nazwa klienta</p>
   <input type="text" v-model="this.client.name">
   <p>Przypisany pracownik:</p>
     <select v-model="selectEmployee">
