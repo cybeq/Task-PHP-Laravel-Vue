@@ -40,11 +40,11 @@ class CarAssignedNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $client = Client::where(["id"=>$this->model->id])->first();
+
         return (new MailMessage)
             ->subject("Car Notification")
-            ->line('The owner of the ' . $this->model->name . ' has been changed.')
-            ->line('The car was taken by ' . $client->name );
+            ->line('The owner of the ' . $this->model->id . ' has been changed.');
+
     }
 
     /**

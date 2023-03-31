@@ -12,7 +12,7 @@ const routes = [
         redirect: '/clients',
     },
     {
-        path:'/create/:model',
+        path:'/create/:section',
         props:true,
         component: AddComponent
     },

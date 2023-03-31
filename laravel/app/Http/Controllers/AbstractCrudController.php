@@ -27,6 +27,7 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
     private function getInstance(string $modelName):string{
         $this->modelName = "App\\Models\\".$modelName;
         $this->modelNameNoPath = $modelName;
+
         try {
             $this->model = new $this->modelName;
         }catch(\Throwable $e){
@@ -44,7 +45,9 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
                                     $request->route('model'),
                                     $request->get('foreign_id') ?? null,
                                     $request->get('price') ?? null,
-                                    $request->get('order_id') ?? null
+                                    $request->get('order_id') ?? null,
+                                    $request->get('car_id') ?? null,
+
         );
     }
 
@@ -65,9 +68,11 @@ abstract class AbstractCrudController extends Controller implements CrudInterfac
         return CrudService::update(
                                 $request->route('id') === 'test',
                                 $request->get('car_id') ?? null,
-                                $this->model, $request->route('id'),
+                                $this->modelName,
+                                $request->route('id'),
                                 $request->get('foreign_id') ?? null,
-                                $request->get('name'),$this->modelName ?? null,
+                                $request->get('name'),
+                                    $this->modelName ?? null,
                                 $request->get('price') ?? null,
                                 $request->get('order_id') ?? null
         );

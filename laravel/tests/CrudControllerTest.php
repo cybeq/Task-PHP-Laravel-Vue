@@ -47,7 +47,7 @@ class AbstractCrudControllerTest extends TestCase
     {
         foreach(["Car", "Client", "Order", "Employee"] as $modelName) {
             $controller = $this->getMockForAbstractClass(AbstractCrudController::class, [new Request()]);
-            $response = $this->put("/api/update/$modelName/test",["name"=>"Test"]);
+            $response = $this->put("/api/update/$modelName/3",["name"=>"Test"]);
             $response = $response->original;
             $this->assertInstanceOf('Illuminate\Database\Eloquent\Model', $response);
 
