@@ -51,6 +51,13 @@ class CrudService
             $model->orders = $client->orders()->get();
             return $model;
         }
+        if($id !== null && $modelName==='Car'){
+            $car = Car::find($id);
+            $model =  $model::find($id);
+            $model->clients = $car->clients()->get();
+            return $model;
+        }
+        
         if($id !== null){
             return $model::find($id);
         }
@@ -66,6 +73,19 @@ class CrudService
             }
             return $modelGroup->toArray();
         }
+
+        if($modelName === 'Car'){
+            $modelGroup = $model::all();
+            foreach ( $modelGroup as $singleModel ){
+                if(!$singleModel->id){
+                    continue;
+                }
+                $car = Car::find($singleModel->id);
+                $singleModel->clients = $car->clients()->get();
+            }
+            return $modelGroup->toArray();
+        }
+
         return $model::all()->toArray();
     }
     public static function update(bool $test, string|null $carId, string $instance, string|null $id, string|null $foreign, string|null $name, string $modelName, string|null $price, string|null $orderId): mixed{
@@ -91,8 +111,8 @@ class CrudService
             $model->clients()->syncWithoutDetaching(Client::find($foreign));
         }
 
-        if($modelName === 'Order'){
-            $model->price = 350 ;
+        if($price !== null && $modelNameEndOfPath === 'Order'){
+            $model->price = $price;
         }
         try {
             $model->save();

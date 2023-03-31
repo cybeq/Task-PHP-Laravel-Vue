@@ -73,7 +73,7 @@ export default {
          <span></span>
          <div>
               <p style="font-weight: bold">Utworzony: ${new Date(employee.created_at).toDateString()}</p>
-              <p style="font-weight: bold">Obsługiwany klient: </p>
+
          </div>
       `;
       dom.appendChild(div);

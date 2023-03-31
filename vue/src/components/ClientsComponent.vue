@@ -46,6 +46,7 @@ export default {
         droppable:{},
     }
   },
+
   methods:{
     edit(option, client){
       if(option === 'delete'){

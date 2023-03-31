@@ -4,7 +4,15 @@
    <IconIc svgPath="search" width="36" height="36" fillColor="orange"></IconIc>
    <input  type="search"  v-model="searchedPhrase" >
  </div>
-
+ <div style="display: flex;justify-content: center; margin-top:20px;">
+   <button class="save" @click="add()" v-if="this.$route.path.replaceAll('/', '') === 'clients'
+                                            || this.$route.path.replaceAll('/', '') === 'orders'
+                                            || this.$route.path.replaceAll('/', '') === 'employees'
+                                            || this.$route.path.replaceAll('/', '') === 'cars'
+    ">
+     Dodaj
+   </button>
+ </div>
  <div class="list-container">
 
    <div class="column" v-if="this.$route.name === 'Clients'">
@@ -51,6 +59,7 @@
 <script>
 import {service} from '../services/CrudService'
 import IconIc from "@/components/widgets/IconIc.vue";
+import router from "@/routes";
 export default {
   name: "ListController",
   components: {IconIc},
@@ -82,6 +91,11 @@ export default {
     },
   },
   methods:{
+    add(){
+      this.path = this.$route.path.replaceAll('/', '');
+      if(this.path === 'orders' || this.path ==='clients' || this.path === 'cars' || this.path === 'employees')
+      router.push(`/create/${this.path}`)
+    },
     summarize(client, option){
       let summary = 0;
       switch(option){
@@ -135,7 +149,7 @@ export default {
       this.list = this.filteredList;
       this.isFiltered = true;
     }
-  }
+  },
 }
 </script>
 

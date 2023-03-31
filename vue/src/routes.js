@@ -4,11 +4,17 @@ import CarsComponent from "@/components/CarsComponent.vue";
 import OrdersComponent from "@/components/OrdersComponent.vue";
 import EmployeesComponent from "@/components/EmployeesComponent.vue";
 import EditComponent from "@/components/aside/EditComponent.vue";
+import AddComponent from "@/components/aside/AddComponent.vue";
 
 const routes = [
     {
         path: '/',
         redirect: '/clients',
+    },
+    {
+        path:'/create/:model',
+        props:true,
+        component: AddComponent
     },
     {
         path:'/edit/:model/:id',

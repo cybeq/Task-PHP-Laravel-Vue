@@ -38,6 +38,9 @@ export default {
       type:Array
     },
   },
+  mounted(){
+    console.log(this.cars)
+  },
   data() {
     return {
       droppable: {},
@@ -73,7 +76,6 @@ export default {
          <span></span>
          <div>
               <p style="font-weight: bold">Utworzony: ${new Date(car.created_at).toDateString()}</p>
-              <p style="font-weight: bold">Klienci, którzy posiadają to auto: </p>
          </div>
       `;
       dom.appendChild(div);

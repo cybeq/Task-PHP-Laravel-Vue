@@ -74,7 +74,6 @@ export default {
          <span></span>
          <div>
               <p style="font-weight: bold">Utworzony: ${new Date(order.created_at).toDateString()}</p>
-               <p style="font-weight: bold">Zakupiony: ${new Date(order.created_at).toDateString()} razy</p>
          </div>
       `;
       dom.appendChild(div);

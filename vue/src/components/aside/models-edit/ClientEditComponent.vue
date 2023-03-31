@@ -73,29 +73,5 @@ export default {
 </script>
 
 <style scoped>
-.save{
-  display:block;
-  background: none;
-  border:solid 2px orange;
-  border-radius: 12px;
-  padding:12px;
-  margin-block: 15px;
-  color:orange;
-  font-family: PoppinsMedium, sans-serif;
-  padding-inline: 30px;
-  transition: background-color 0.6s ease, color 0.6s ease;
-}
-.save:hover{
-  background-color: orange;
-  color:white;
-  cursor:pointer
-}
-input, select{
-  padding: 3px;
-  border-radius:10px;
-  padding-inline: 10px;
-  border: solid 1px orange;
-  font-style: italic;
-  background: white;
-}
+
 </style>
