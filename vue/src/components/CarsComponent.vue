@@ -5,10 +5,10 @@
       <div>{{car.name}}</div>
       <div></div>
       <div style="display: flex">
-        <button class="action-button" @click="edit('delete', car)">
+        <button class="action-button" @click="edit('delete', car)">usuń
           <IconIc svgPath="trash" width="26" height="26" fillColor="#fff"></IconIc>
         </button>
-        <button class="action-button-green" @click="edit(null, car)">
+        <button class="action-button-green" @click="edit(null, car)">edytuj
           <IconIc svgPath="edit" width="26" height="26" fillColor="#fff"></IconIc>
         </button>
       </div>

@@ -2,16 +2,117 @@
 <section>
   <h1>{{translatable[model] }}</h1>
       <div v-if="this.model === 'Client'">
-        <ClientEditComponent :list="this.list" :model="this.model" :id="this.id"></ClientEditComponent>
+        <FormEditComponent
+            :modelName="this.model"
+            :id="this.id"
+            :form="{
+                                    method:'create',
+                                    inputs: [
+                                              {
+                                                name:'name',
+                                                description:'Imię nazwisko pracownika',
+                                                type:'text',
+                                                value:this.editableModel.name,
+                                                placeholder:'Podaj imię i naz pracownika'
+                                              },
+                                    ],
+                                     selects: [
+                                             {
+                                               name:'foreign_id',
+                                               description: 'Przypisz pracownika' ,
+                                               value:this.editableModel.employee_id,
+                                               list:this.list.Employee
+                                             },
+                                             {
+                                               name:'order_id',
+                                               description: 'Zamów produkt' ,
+                                               value:null,
+                                               list:this.list.Order
+                                             },
+                                             {
+                                               name:'car_id',
+                                               description: 'Dodaj auto' ,
+                                               value:null,
+                                               list:this.list.Car
+                                             },
+
+                                    ], }"
+        ></FormEditComponent>
+
       </div>
       <div v-if="this.model === 'Car'">
-        <CarEditComponent  :list="this.list" :model="this.model" :id="this.id"></CarEditComponent>
+        <FormEditComponent
+            :modelName="this.model"
+            :id="this.id"
+            :form="{
+                                                method:'create',
+                                                inputs: [
+                                                          {
+                                                            name:'name',
+                                                            description:'Marka i nazwa auta',
+                                                            type:'text',
+                                                            value:this.editableModel.name,
+                                                            placeholder:'Wpisz nazwę auta'
+                                                          },
+                                                ],
+                                                selects: [
+                                                           {
+                                                             name:'foreign_id',
+                                                             description: 'Dodaj właściciela pojazdu' ,
+                                                             value:null,
+                                                             list:this.list.Client
+                                                           },
+                                                         ],
+
+                                                data: this.editableModel.clients
+                                   }" >
+
+        </FormEditComponent>
       </div>
       <div v-if="this.model === 'Order'">
-        <OrderEditComponent  :model="this.model" :id="this.id"></OrderEditComponent>
+        <FormEditComponent
+            :id="this.id"
+            :modelName="this.model"
+            :form="{
+                                    method:'create',
+                                    inputs: [
+                                              {
+                                                name:'name',
+                                                description:'Nazwa zamówienia',
+                                                type:'text',
+                                                value:this.editableModel.name,
+                                                placeholder:'Wpisz nazwę zamówienia'
+                                              },
+                                              {
+                                                name:'price',
+                                                description:'Cena zamówienia',
+                                                type:'number',
+                                                value:this.editableModel.price,
+                                                placeholder:'Cena'
+                                              },
+                                    ],
+                                    selects: [],
+                                    }"
+        ></FormEditComponent>
       </div>
       <div v-if="this.model === 'Employee'">
-        <EmployeeEditComponent :model="this.model" :id="this.id"></EmployeeEditComponent>
+        <FormEditComponent
+            :modelName="this.model"
+            :id="this.id"
+            :form="{
+                                    method:'create',
+                                    inputs: [
+                                              {
+                                                name:'name',
+                                                description:'Imię nazwisko pracownika',
+                                                type:'text',
+                                                value:this.editableModel.name,
+                                                placeholder:'Podaj imię i naz pracownika'
+                                              },
+                                    ],
+                                    selects: [],
+                                     }"
+        ></FormEditComponent>
       </div>
 </section>
 
@@ -19,22 +120,17 @@
 
 <script>
 import {service} from "@/services/CrudService";
-import ClientEditComponent from "@/components/aside/models-edit/ClientEditComponent.vue";
-import CarEditComponent from "@/components/aside/models-edit/CarEditComponent.vue";
-import EmployeeEditComponent from "@/components/aside/models-edit/EmployeeEditComponent.vue";
-import OrderEditComponent from "@/components/aside/models-edit/OrderEditComponent.vue";
+import FormEditComponent from "@/components/aside/models-edit/FormEditComponent.vue";
 export default {
   name: "EditComponent",
   components:{
-    ClientEditComponent,
-    CarEditComponent,
-    EmployeeEditComponent,
-    OrderEditComponent
+    FormEditComponent
   },
   data(){
     return{
       list:[],
       translatable: {Client:"Klient", Car:"Auto", Order:"Zamówienie", Employee:"Pracownik"},
+      editableModel:{},
     }
   },
   mounted() {
@@ -45,6 +141,9 @@ export default {
           }
         })
       }
+      service.read(this.model, this.id).then(editable =>{
+        this.editableModel = editable;
+      })
   },
   props:{
     id:{

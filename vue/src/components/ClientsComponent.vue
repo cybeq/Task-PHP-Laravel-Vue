@@ -7,10 +7,10 @@
             <div>{{this.summarize(client)}}</div>
             <div>{{this.summarize(client,'cars')}}</div>
             <div style="display: flex">
-              <button class="action-button" @click="edit('delete', client)">
+              <button class="action-button" @click="edit('delete', client)">usuń
                   <IconIc svgPath="trash" width="26" height="26" fillColor="#fff"></IconIc>
               </button>
-              <button class="action-button-green" @click="edit(null, client)">
+              <button class="action-button-green" @click="edit(null, client)">edytuj
                 <IconIc svgPath="edit" width="26" height="26" fillColor="#fff"></IconIc>
               </button>
             </div>

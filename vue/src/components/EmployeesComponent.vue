@@ -5,10 +5,10 @@
       <div>{{employee.name}}</div>
       <div></div>
       <div style="display: flex">
-        <button class="action-button" @click="edit('delete', employee)">
+        <button class="action-button" @click="edit('delete', employee)">usuń
           <IconIc svgPath="trash" width="26" height="26" fillColor="#fff"></IconIc>
         </button>
-        <button class="action-button-green" @click="edit(null, employee)">
+        <button class="action-button-green" @click="edit(null, employee)">edytuj
           <IconIc svgPath="edit" width="26" height="26" fillColor="#fff"></IconIc>
         </button>
       </div>

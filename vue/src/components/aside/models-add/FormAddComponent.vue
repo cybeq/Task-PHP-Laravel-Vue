@@ -42,16 +42,8 @@ export default {
       if(this.form.method === 'create')
       service.create(this.modelName, body).then(res=>{
         console.log(res)
+        location.href=`/${ {Client:"clients", Order:"orders", Employee:"employees", Car:"cars"}[this.modelName] }`
       })
-
-      if(this.form.method === 'update')
-      {
-        service.edit(this.modelName, this.form.id, body).then(res=>{
-          console.log(res)
-        })
-      }
-
-
     }
   }
 }

@@ -67,8 +67,10 @@ export default {
     return {
       list: [],
       filteredList: [],
+      paginatedList:[],
       searchedPhrase: undefined,
       isFiltered:false,
+      maxItemsOnPage:10,
     }
   },
   mounted() {
@@ -77,9 +79,11 @@ export default {
         if (!res.error) {
           this.list[all] = res;
           this.filteredList[all] = res;
+          this.paginatedList[all] = res;
         }
       })
     }
+    this.paginate();
   },
   watch: {
     searchedPhrase() {
@@ -148,6 +152,15 @@ export default {
       }
       this.list = this.filteredList;
       this.isFiltered = true;
+    },
+    paginate(){
+      // this.paginatedList = [];
+      // for (let all of ['Client', 'Order', 'Car', 'Employee']) {
+      //   for (var i = 0; i < this.list[all].length; i += 10) {
+      //     this.paginatedList.push(this.list[all].slice(i, i + 10));
+      //   }
+      // }
+      // console.log(this.paginatedList)
     }
   },
 }

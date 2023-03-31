@@ -6,10 +6,10 @@
 
       <div>{{order.price}} ,-</div>
       <div style="display: flex">
-        <button class="action-button" @click="edit('delete', order)">
+        <button class="action-button" @click="edit('delete', order)">usuń
           <IconIc svgPath="trash" width="26" height="26" fillColor="#fff"></IconIc>
         </button>
-        <button class="action-button-green" @click="edit(null, order)">
+        <button class="action-button-green" @click="edit(null, order)">edytuj
           <IconIc svgPath="edit" width="26" height="26" fillColor="#fff"></IconIc>
         </button>
       </div>

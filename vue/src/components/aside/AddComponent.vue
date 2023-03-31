@@ -23,7 +23,7 @@
                                                list:this.list.Client
                                              },
                                              ],
-                                  post:['name', 'foreign_id'] }" >
+                                   }" >
 
         </FormAddComponent>
     </div>
@@ -50,7 +50,7 @@
                                               },
                                     ],
                                     selects: [],
-                                    post:['name', 'foreign_id'] }"
+                                    }"
                           ></FormAddComponent>
     </div>
 
@@ -69,7 +69,7 @@
                                               },
                                     ],
                                     selects: [],
-                                    post:['name', 'foreign_id'] }"
+                                     }"
       ></FormAddComponent>
     </div>
 
@@ -107,8 +107,7 @@
                                                list:this.list.Car
                                              },
 
-                                    ],
-                                    post:['name', 'foreign_id'] }"
+                                    ], }"
       ></FormAddComponent>
     </div>
 
