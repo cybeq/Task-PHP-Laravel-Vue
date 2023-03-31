@@ -1,19 +1,4 @@
 <template>
-  <router-view
-      :clients   = "this.clients"
-      :employees = "this.employees"
-      :orders    = "this.orders"
-      :cars      = "this.cars"
-  ></router-view>
-  <div class="client-container">
-
-    <div class="column">
-        <div class="sortable">id</div>
-        <div class="sortable">Imię i nazwisko</div>
-        <div>Łączna wota zakupów</div>
-        <div>Liczba aut</div>
-        <div>Edytuj/Usuń</div>
-    </div>
     <div  v-for="client in clients" :key="client.id" @click="dropDownInfo(client)">
 
         <div class="row" :style="this.droppable[client.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' ">
@@ -32,8 +17,6 @@
         </div>
         <div :id="`${client.id}-droppable`" :style="!this.droppable[client.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' " ></div>
     </div>
-  </div>
-
 </template>
 
 <script>
@@ -72,17 +55,17 @@ export default {
         }).catch(e=>{
           console.log(e)});
       }
-      router.push('edit');
+      router.push(`/edit/Client/${client.id}`);
     },
     dropDownInfo(client){
       const dom = document.getElementById(`${client.id}-droppable`)
+      if(dom===null) return;
       const ordersDomElement = getOrdersDOM(client)
       if(this.droppable[client.id]){
         this.droppable[client.id] = false;
         dom.innerHTML='';
         return;
       }
-
       const div = document.createElement('div');
       div.style.cursor='inherit'
       div.style.pointerEvents='none'
@@ -122,7 +105,4 @@ export default {
   grid-template-columns: 1fr 2fr 1fr 6fr 2fr;
 
 }
-
-
-
 </style>

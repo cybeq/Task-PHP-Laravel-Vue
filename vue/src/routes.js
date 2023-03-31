@@ -7,17 +7,22 @@ import EditComponent from "@/components/aside/EditComponent.vue";
 
 const routes = [
     {
+        path: '/',
+        redirect: '/clients',
+    },
+    {
+        path:'/edit/:model/:id',
+        name:'edit',
+        component:EditComponent,
+        props: true
+
+    },
+    {
         path: '/clients',
         name: 'Clients',
         component: ClientsComponent,
         props:true,
-        children:[
-            {
-                path:'edit',
-                name:'edit',
-                component:EditComponent
-            }
-        ]
+        children:[]
     },
     {
         path: '/cars',
