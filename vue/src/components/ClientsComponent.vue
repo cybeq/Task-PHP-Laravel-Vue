@@ -54,6 +54,7 @@ export default {
           location.reload();
         }).catch(e=>{
           console.log(e)});
+        return;
       }
       router.push(`/edit/Client/${client.id}`);
     },

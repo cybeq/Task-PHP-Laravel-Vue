@@ -25,6 +25,26 @@ const service = {
             console.error(error);
             return {"error":error};
         }
+    },
+    edit: async function(model, id, body){
+        console.log(model, id, body)
+        let url = `/api/update/${model}/${id}`
+        try {
+            const response = await fetch(url,{
+                method:'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(body)
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+            return {"error":error};
+        }
     }
 };
 

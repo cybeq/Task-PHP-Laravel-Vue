@@ -1,43 +1,50 @@
 <template>
 <section>
-  <h1>{{translatable[model] }} {{this.editableModel.name}}</h1>
-
-  <div v-if="this.model === 'Client'">
-    client
-  </div>
-  <div v-if="this.model === 'Car'">
-    car
-  </div>
-  <div v-if="this.model === 'Order'">
-    ord
-  </div>
-  <div v-if="this.model === 'Employee'">
-    emp
-  </div>
-
+  <h1>{{translatable[model] }}</h1>
+      <div v-if="this.model === 'Client'">
+        <ClientEditComponent :list="this.list" :model="this.model" :id="this.id"></ClientEditComponent>
+      </div>
+      <div v-if="this.model === 'Car'">
+        <CarEditComponent  :list="this.list" :model="this.model" :id="this.id"></CarEditComponent>
+      </div>
+      <div v-if="this.model === 'Order'">
+        <OrderEditComponent :list="this.list" :model="this.model" :id="this.id"></OrderEditComponent>
+      </div>
+      <div v-if="this.model === 'Employee'">
+        <EmployeeEditComponent :list="this.list" :model="this.model" :id="this.id"></EmployeeEditComponent>
+      </div>
 </section>
 
 </template>
 
 <script>
 import {service} from "@/services/CrudService";
-
+import ClientEditComponent from "@/components/aside/models-edit/ClientEditComponent.vue";
+import CarEditComponent from "@/components/aside/models-edit/CarEditComponent.vue";
+import EmployeeEditComponent from "@/components/aside/models-edit/EmployeeEditComponent.vue";
+import OrderEditComponent from "@/components/aside/models-edit/OrderEditComponent.vue";
 export default {
   name: "EditComponent",
+  components:{
+    ClientEditComponent,
+    CarEditComponent,
+    EmployeeEditComponent,
+    OrderEditComponent
+  },
   data(){
     return{
       list:[],
       translatable: {Client:"Klient", Car:"Auto", Order:"Zamówienie", Employee:"Pracownik"},
-      editableModel: {},
     }
   },
   mounted() {
-      service.read(this.model).then(res => {
-        if (!res.error) {
-          this.list[this.model] = res;
-            this.editableModel = this.list[this.model].find(model => model.id === parseInt(this.id))
-        }
-      })
+        for (let all of ['Client', 'Order', 'Car', 'Employee']) {
+        service.read(all).then(res => {
+          if (!res.error) {
+            this.list[all] = res;
+          }
+        })
+      }
   },
   props:{
     id:{
@@ -49,8 +56,6 @@ export default {
       required:true
     },
   },
-
-
 }
 </script>
 

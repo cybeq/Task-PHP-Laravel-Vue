@@ -39,7 +39,7 @@ class CrudService
             return null;
         }
         if($orderId!== null && $modelName === 'Client'){
-            $model->orders()->syncWithoutDetaching(Order::find($orderId));
+            $model->orders()->attach(Order::find($orderId));
         }
         return $model;
     }
@@ -68,9 +68,9 @@ class CrudService
         }
         return $model::all()->toArray();
     }
-    public static function update(bool $test, string $instance, string|null $id, string|null $foreign, string $name, string $modelName, string|null $price, string|null $orderId): mixed{
+    public static function update(bool $test, string|null $carId, string $instance, string|null $id, string|null $foreign, string|null $name, string $modelName, string|null $price, string|null $orderId): mixed{
         $model =  $instance::find($id);
-
+        if($name !== null )$model->name = $name;
         if($test)
         {
             $model =  $instance::all()->first();
@@ -101,7 +101,10 @@ class CrudService
         }
 
         if($orderId!== null && $modelNameEndOfPath === 'Client'){
-            $model->orders()->syncWithoutDetaching(Order::find($orderId));
+            $model->orders()->attach(Order::find($orderId));
+        }
+        if($carId!== null && $modelNameEndOfPath === 'Client'){
+            $model->cars()->syncWithoutDetaching(Car::find($carId));
         }
 
         return $model;
