@@ -120,7 +120,7 @@
 
 <script>
 import {service} from "@/services/CrudService";
-import FormEditComponent from "@/components/aside/models-edit/FormEditComponent.vue";
+import FormEditComponent from "@/components/aside/form-edit/FormEditComponent.vue";
 export default {
   name: "EditComponent",
   components:{

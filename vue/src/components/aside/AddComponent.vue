@@ -115,18 +115,12 @@
 </template>
 
 <script>
-import FormAddComponent from "@/components/aside/models-add/FormAddComponent.vue";
-// import ClientAddComponent from "@/components/aside/models-add/ClientAddComponent.vue";
-// import EmployeeAddComponent from "@/components/aside/models-add/EmployeeAddComponent.vue";
-// import OrderAddComponent from "@/components/aside/models-add/OrderAddComponent.vue";
+import FormAddComponent from "@/components/aside/form-add/FormAddComponent.vue";
 import {service} from "@/services/CrudService";
 export default {
   name: "AddComponent",
   components:{
     FormAddComponent,
-    // ClientAddComponent,
-    // EmployeeAddComponent,
-    // OrderAddComponent
   },
   props:{
     section:{

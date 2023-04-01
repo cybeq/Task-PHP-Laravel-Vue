@@ -44,7 +44,7 @@ export default {
 
         service.edit(this.modelName, this.id,body).then(res=>{
           console.log(res)
-          // location.href=`/${ {Client:"clients", Order:"orders", Employee:"employees", Car:"cars"}[this.modelName] }`
+          location.href=`/${ {Client:"clients", Order:"orders", Employee:"employees", Car:"cars"}[this.modelName] }`
         })
     }
   }

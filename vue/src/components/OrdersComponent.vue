@@ -1,5 +1,6 @@
 <template>
-  <div  v-for="order in orders" :key="order.id" @click="dropDownInfo(order)">
+<div v-if="this.orders">
+  <div  v-for="order in orders[this.page]" :key="order.id" @click="dropDownInfo(order)">
     <div class="row"  :style="this.droppable[order.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015'">
       <div>{{order.id}}</div>
       <div>{{order.name}}</div>
@@ -16,6 +17,7 @@
     </div>
     <div :id="`${order.id}-droppable`"  :style="!this.droppable[order.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' " ></div>
   </div>
+</div>
 </template>
 <script>
 import IconIc from "@/components/widgets/IconIc.vue";
@@ -38,6 +40,7 @@ export default {
     cars:{
       type:Array
     },
+    page:Number
   },
   data() {
     return {

@@ -1,6 +1,6 @@
 <template>
-    <div  v-for="client in clients" :key="client.id" @click="dropDownInfo(client)">
-
+  <div v-if="this.clients">
+    <div  v-for="client in clients[this.page]" :key="client.id" @click="dropDownInfo(client)">
         <div class="row" :style="this.droppable[client.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' ">
             <div>{{client.id}}</div>
             <div>{{client.name}}</div>
@@ -17,6 +17,7 @@
         </div>
         <div :id="`${client.id}-droppable`" :style="!this.droppable[client.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' " ></div>
     </div>
+</div>
 </template>
 
 <script>
@@ -39,11 +40,16 @@ export default {
     },
     cars:{
       type:Array
-    }
+    },
+    page:Number
+
   },
   data(){
     return{
         droppable:{},
+        signedEmployee:{},
+        ignorable:null,
+
     }
   },
 
@@ -60,6 +66,17 @@ export default {
       router.push(`/edit/Client/${client.id}`);
     },
     dropDownInfo(client){
+      for(let employee of this.employees){
+        try {
+          this.signedEmployee = employee.find(employee => {
+            return employee.id === client.employee_id
+          }).name
+        }catch(_){
+          this.ignorable = _;
+        }
+          if(this.signedEmployee) break;
+      }
+
       const dom = document.getElementById(`${client.id}-droppable`)
       if(dom===null) return;
       const ordersDomElement = getOrdersDOM(client)
@@ -78,7 +95,7 @@ export default {
          <span></span>
          <div>
               <p style="font-weight: bold">Utworzony: ${new Date(client.created_at).toDateString()}</p>
-              <p style="font-weight: bold">Przypisany pracownik: ${client.employee_id ? this.employees.find(employee => {return employee.id === client.employee_id}).name : 'brak'}</p>
+              <p style="font-weight: bold">Przypisany pracownik: ${client.employee_id ? this.signedEmployee : 'brak'}</p>
               <p style="font-weight: bold">Lista zakupów:</p>
          </div>
       `;
@@ -91,9 +108,12 @@ export default {
       let summary = 0;
       switch(option){
         case 'cars':
-          client.cars.forEach(()=>{ summary+=1 }) ; break;
+          try { client.cars.forEach(() => { summary += 1 }); }catch (_) { this.ignorable = _ }
+          break;
+
         default:
-          client.orders.forEach(order=>{ summary+=order.price }); break;
+          try{ client.orders.forEach(order=>{ summary+=order.price });  } catch(_){ this.ignorable = _ }
+          break;
       }
       return summary;
     }

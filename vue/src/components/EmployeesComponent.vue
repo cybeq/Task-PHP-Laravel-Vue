@@ -1,5 +1,6 @@
 <template>
-  <div  v-for="employee in employees" :key="employee.id" @click="dropDownInfo(employee)">
+  <div v-if="this.employees">
+  <div  v-for="employee in employees[this.page]" :key="employee.id" @click="dropDownInfo(employee)">
     <div class="row"  :style="this.droppable[employee.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015'">
       <div>{{employee.id}}</div>
       <div>{{employee.name}}</div>
@@ -14,6 +15,7 @@
       </div>
     </div>
     <div :id="`${employee.id}-droppable`"  :style="!this.droppable[employee.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' " ></div>
+  </div>
   </div>
 </template>
 <script>
@@ -37,6 +39,7 @@ export default {
     cars:{
       type:Array
     },
+    page:Number
   },
   data() {
     return {

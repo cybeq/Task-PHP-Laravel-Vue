@@ -52,7 +52,20 @@
        :orders    = "this.list.Order"
        :cars      = "this.list.Car"
        :employees = "this.list.Employee"
+       :page      = this.page
    />
+
+   <div class="pagination">
+     <div class="pagination-arrow" @click="moveToPage('backward')">
+       <IconIc svgPath="arrow-left" width="26" height="26" fillColor="#fff"></IconIc>
+     </div>
+     <div style="font-family:PoppinsMedium; display:flex; justify-content: center; align-items: center; border-bottom:1px solid #00000015">
+       {{page+1}}
+     </div>
+     <div class="pagination-arrow" @click="moveToPage('forward')">
+       <IconIc svgPath="arrow-right" width="26" height="26" fillColor="#fff"></IconIc>
+     </div>
+   </div>
  </div>
 </template>
 
@@ -71,27 +84,37 @@ export default {
       searchedPhrase: undefined,
       isFiltered:false,
       maxItemsOnPage:10,
+      page:0
     }
   },
   mounted() {
+    let loadedServices = 0;
     for (let all of ['Client', 'Order', 'Car', 'Employee']) {
       service.read(all).then(res => {
         if (!res.error) {
           this.list[all] = res;
           this.filteredList[all] = res;
-          this.paginatedList[all] = res;
+        }
+      }).finally(()=>{
+        loadedServices++;
+        if(loadedServices === 4)
+        {
+          this.paginate(this.list);
         }
       })
     }
-    this.paginate();
+    router.beforeEach((to, from, next) => { this.page=0 ; next(); });
   },
   watch: {
     searchedPhrase() {
+      const searchedList = {};
       for (let all of ['Client', 'Order', 'Car', 'Employee']) {
-        this.list[all] = this.filteredList[all].filter(client => {
-          return client.name.toLowerCase().includes(this.searchedPhrase.toLowerCase())
-        })
+        if(!searchedList[all]) searchedList[all] = [];
+        for (let single of this.filteredList[all]) {
+          searchedList[all].push( ( single.filter(client => { return client.name.toLowerCase().includes(this.searchedPhrase.toLowerCase()) })))
+        }
       }
+      this.list= searchedList
     },
   },
   methods:{
@@ -116,16 +139,19 @@ export default {
           switch(filter){
             case "orders":
               if(all === 'Client'){
-                this.filteredList[all].sort((a, b) => a[filter] && b[filter] ? this.summarize(a) - this.summarize(b):null);
+                for(let single of this.filteredList[all] )
+                single.sort((a, b) => a[filter] && b[filter] ? this.summarize(a) - this.summarize(b):null);
               }
               break;
             case "cars":
               if(all === 'Client'){
-                this.filteredList[all].sort((a, b) => a[filter] && b[filter] ? this.summarize(a, 'cars') - this.summarize(b, 'cars'):null);
+                for(let single of this.filteredList[all] )
+                single.sort((a, b) => a[filter] && b[filter] ? this.summarize(a, 'cars') - this.summarize(b, 'cars'):null);
               }
               break;
             default:
-              this.filteredList[all].sort((a, b) => filter === 'name' ? a[filter].localeCompare(b[filter]) : a[filter] - b[filter]);
+              for(let single of this.filteredList[all] )
+              single.sort((a, b) => filter === 'name' ? a[filter].localeCompare(b[filter]) : a[filter] - b[filter]);
               break;
           }
         }
@@ -136,16 +162,19 @@ export default {
         switch(filter){
           case "orders":
             if(all === 'Client'){
-              this.filteredList[all].sort((a, b) => a[filter] && b[filter] ? this.summarize(b) - this.summarize(a):null);
+              for(let single of this.filteredList[all] )
+              single.sort((a, b) => a[filter] && b[filter] ? this.summarize(b) - this.summarize(a):null);
             }
             break;
           case "cars":
             if(all === 'Client'){
-              this.filteredList[all].sort((a, b) => a[filter] && b[filter] ? this.summarize(b, 'cars') - this.summarize(a, 'cars'):null);
+              for(let single of this.filteredList[all] )
+              single.sort((a, b) => a[filter] && b[filter] ? this.summarize(b, 'cars') - this.summarize(a, 'cars'):null);
             }
             break;
           default:
-            this.filteredList[all].sort((a, b) => filter === 'name' ? b[filter].localeCompare(a[filter]) : b[filter] - a[filter]);
+            for(let single of this.filteredList[all] )
+            single.sort((a, b) => filter === 'name' ? b[filter].localeCompare(a[filter]) : b[filter] - a[filter]);
             break;
 
         }
@@ -153,16 +182,36 @@ export default {
       this.list = this.filteredList;
       this.isFiltered = true;
     },
-    paginate(){
-      // this.paginatedList = [];
-      // for (let all of ['Client', 'Order', 'Car', 'Employee']) {
-      //   for (var i = 0; i < this.list[all].length; i += 10) {
-      //     this.paginatedList.push(this.list[all].slice(i, i + 10));
-      //   }
-      // }
-      // console.log(this.paginatedList)
+    paginate(list){
+      this.paginatedList = [];
+      for (let all of ['Client', 'Order', 'Car', 'Employee']) {
+        for (let i = 0; i < list[all].length; i += this.maxItemsOnPage) {
+          if(!this.paginatedList[all]) {
+            this.paginatedList[all] = []
+          }
+          this.paginatedList[all].push(list[all].slice(i, i + this.maxItemsOnPage));
+        }
+      }
+      this.list = this.paginatedList;
+      this.filteredList = this.list
+    },
+    moveToPage(direction){
+      if(direction === 'forward'){
+        const arrLength = this.list[{cars:'Car', orders:'Order', employees:'Employee', clients:'Client'}[this.$route.path.replace('/','')]].length;
+
+        if(arrLength > this.page +1)
+        this.page++;
+        console.log(arrLength, this.page +1)
+        return;
+      }
+      if(direction === 'backward'){
+        if(this.page>0)
+        this.page--;
+        return;
+      }
     }
   },
+
 }
 </script>
 
@@ -197,5 +246,25 @@ export default {
 }
 .sortable:hover{
   cursor: pointer;
+}
+.pagination{
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr;
+  width:100%;
+  height:35px;
+}
+.pagination-arrow{
+  background:#f57445;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 1s ease;
+  cursor: pointer;
+}
+.pagination-arrow:hover{
+  background: #914225;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
