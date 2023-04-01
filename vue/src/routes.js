@@ -5,11 +5,16 @@ import OrdersComponent from "@/components/OrdersComponent.vue";
 import EmployeesComponent from "@/components/EmployeesComponent.vue";
 import EditComponent from "@/components/aside/EditComponent.vue";
 import AddComponent from "@/components/aside/AddComponent.vue";
-
+import LoginComponent from "@/components/auth/LoginComponent.vue";
+import auth from "@/middleware/auth";
 const routes = [
     {
         path: '/',
         redirect: '/clients',
+    },
+    {
+        path:'/login',
+        component: LoginComponent,
     },
     {
         path:'/create/:section',
@@ -28,7 +33,6 @@ const routes = [
         name: 'Clients',
         component: ClientsComponent,
         props:true,
-        children:[]
     },
     {
         path: '/cars',
@@ -53,5 +57,5 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 })
-
+router.beforeEach(auth);
 export default router;

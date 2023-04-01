@@ -42,6 +42,8 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
+    'userAuthName' => 'mat',
+    'userAuthPassword' => '1234',
 
     /*
     |--------------------------------------------------------------------------

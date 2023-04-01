@@ -47,6 +47,7 @@
      <div>Edytuj/Usuń</div>
    </div>
 
+
    <router-view
        :clients   = "this.list.Client"
        :orders    = "this.list.Order"
@@ -55,7 +56,8 @@
        :page      = this.page
    />
 
-   <div class="pagination">
+
+   <div class="pagination" v-if="['clients','orders','employees', 'cars'].filter(res => res === this.$route.path.replaceAll('/', '')).length>0">
      <div class="pagination-arrow" @click="moveToPage('backward')">
        <IconIc svgPath="arrow-left" width="26" height="26" fillColor="#fff"></IconIc>
      </div>

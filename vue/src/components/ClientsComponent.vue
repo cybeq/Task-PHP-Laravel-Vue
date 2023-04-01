@@ -1,6 +1,7 @@
 <template>
   <div v-if="this.clients">
-    <div  v-for="client in clients[this.page]" :key="client.id" @click="dropDownInfo(client)">
+    <div  v-for="client in clients[this.page]" :key="client" @click="dropDownInfo(client)">
+      <div v-if="client">
         <div class="row" :style="this.droppable[client.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' ">
             <div>{{client.id}}</div>
             <div>{{client.name}}</div>
@@ -16,6 +17,7 @@
             </div>
         </div>
         <div :id="`${client.id}-droppable`" :style="!this.droppable[client.id] ? 'border-bottom:none' : 'border-bottom:solid 1px #00000015' " ></div>
+      </div>
     </div>
 </div>
 </template>
@@ -52,7 +54,9 @@ export default {
 
     }
   },
+  mounted() {
 
+  },
   methods:{
     edit(option, client){
       if(option === 'delete'){
