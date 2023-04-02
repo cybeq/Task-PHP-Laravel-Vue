@@ -47,7 +47,9 @@ class AbstractCrudControllerTest extends TestCase
     {
         foreach(["Car", "Client", "Order", "Employee"] as $modelName) {
             $controller = $this->getMockForAbstractClass(AbstractCrudController::class, [new Request()]);
-            $response = $this->put("/api/update/$modelName/3",["name"=>"Test"]);
+            $instance = 'App\\Models\\'.$modelName ;
+            $firstModelId = $instance::first()->id;
+            $response = $this->put("/api/update/$modelName/$firstModelId",["name"=>"Test"]);
             $response = $response->original;
             $this->assertInstanceOf('Illuminate\Database\Eloquent\Model', $response);
 
@@ -59,7 +61,9 @@ class AbstractCrudControllerTest extends TestCase
 
         foreach(["Car", "Client", "Order", "Employee"] as $modelName) {
             $controller = $this->getMockForAbstractClass(AbstractCrudController::class, [new Request()]);
-            $response = $this->delete("/api/delete/$modelName/1",["name"=>"Test"]);
+            $instance = 'App\\Models\\'.$modelName ;
+            $firstModelId = $instance::first()->id;
+            $response = $this->delete("/api/delete/$modelName/$firstModelId",["name"=>"Test"]);
             $response = $response->original;
             $this->assertIsBool($response);
         }
